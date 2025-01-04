@@ -1,24 +1,9 @@
 import dotenv from 'dotenv';
 import { sendEmail } from '../lib/emailUtil.js';
 import { sendWhatsAppMessage } from '../lib/whatsappUtil.js';
+import { isEmail, isPhoneNumber, shouldSendMessage, generateUniqueId, sendLogToDiscordWebhook } from '../lib/utils.js';
 
 dotenv.config();
-
-const isEmail = (value) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(value);
-};
-
-const isPhoneNumber = (value) => {
-  const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-  return phoneRegex.test(value);
-};
-
-const shouldSendMessage = (mode) => {
-  if (mode === true) return true;
-  if (mode === false) return Math.random() < 0.1;
-  return false;
-};
 
 export const sendMessage = async (req, res) => {
     try {
@@ -33,14 +18,34 @@ export const sendMessage = async (req, res) => {
                 return res.status(400).json({ message: `Missing required field: ${field}` });
             }
         }
+        const msg_uuid = generateUniqueId();
+        const messageDetails = {
+            mode: data.mode,
+            to: data.to,
+            message: data.message,
+            details: data.details.map(detail => ({
+                field: detail.key,
+                value: detail.value
+            }))
+        };
 
-        const { mode, to, message } = data;
+        let webhookEmbed = {
+            color: 0x0099ff,
+            title: "Details - UUID: " + msg_uuid,
+            fields: messageDetails.details.map(detail => ({
+                name: detail.field,
+                value: detail.value,
+                inline: true
+            }))
+        };
 
-        if (shouldSendMessage(mode)) {
-            if (isEmail(to)) {
-                await sendEmail(to, message);
-            } else if (isPhoneNumber(to)) {
-                await sendWhatsAppMessage(to, message);
+        if (shouldSendMessage(messageDetails.mode)) {
+            if (isEmail(messageDetails.to)) {
+                await sendEmail(messageDetails.to, messageDetails.message);
+                sendLogToDiscordWebhook(webhookEmbed); //hanya log id jada ke webhook, untuk jaga jaga
+            } else if (isPhoneNumber(messageDetails.to)) {
+                await sendWhatsAppMessage(messageDetails.to, messageDetails.message);
+                sendLogToDiscordWebhook(webhookEmbed); //hanya log id jada ke webhook, untuk jaga jaga
             } else {
                 return res.status(400).json({ message: "Invalid 'to' field. Must be an email or phone number." });
             }

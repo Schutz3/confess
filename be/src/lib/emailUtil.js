@@ -19,12 +19,12 @@ const transporter = nodemailer.createTransport({
 const url = process.env.FE_URL;
 const App = process.env.APP_NAME;
 
-export const sendEmail = async (email, message) => {
+export const sendEmail = async (email, message, msg_id) => {
   const mailOptions = {
     from: process.env.APP_NAME +'<' + process.env.EMAIL_USER + '>',
     to: email,
     subject: `Hey someone sent you a message`,
-    text: `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nTo report abuse, please contact us at report@scz.my.id`,
+    text: `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nMsg_Id:${msg_id}\n\nTo report abuse, please contact us at report@scz.my.id`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Hey there!</h2>
@@ -38,6 +38,7 @@ export const sendEmail = async (email, message) => {
           ${new Date().toLocaleString()}
         </p>
         <p style="font-size: 0.8em; color: #999;">
+          Msg_Id: ${msg_id}
           To report abuse, please contact us at <a href="mailto:report@scz.my.id" style="color: #0066cc; text-decoration: none;">report@scz.my.id</a>
         </p>
       </div>

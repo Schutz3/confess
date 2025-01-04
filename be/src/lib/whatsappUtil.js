@@ -28,13 +28,13 @@ const initializeWhatsApp = async () => {
 
 initializeWhatsApp().catch(console.error);
 
-export const sendWhatsAppMessage = async (to, message) => {
+export const sendWhatsAppMessage = async (to, message, msg_id) => {
   if (!client) {
     console.log('WhatsApp client is not initialized. Initializing...');
     await initializeWhatsApp();
   }
   
-  let msg = `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nTo report abuse, please contact us at report@scz.my.id`;
+  let msg = `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nMsg_Id:${msg_id}\n\nTo report abuse, please contact us at report@scz.my.id`;
 
   let formattedNumber = to.replace(/[^\d]/g, ''); 
   if (formattedNumber.startsWith('62')) {
