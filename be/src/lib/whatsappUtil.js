@@ -11,7 +11,11 @@ let client;
 
 const initializeWhatsApp = async () => {
   client = new Client({
-    authStrategy: new LocalAuth()
+    authStrategy: new LocalAuth(),
+    puppeteer: {
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    }
   });
 
   client.on('qr', (qr) => {
