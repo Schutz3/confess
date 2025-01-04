@@ -24,7 +24,7 @@ export const sendEmail = async (email, message, msg_id) => {
     from: process.env.APP_NAME +'<' + process.env.EMAIL_USER + '>',
     to: email,
     subject: `Hey someone sent you a message`,
-    text: `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nMsg_Id:${msg_id}\n\nTo report abuse, please contact us at report@scz.my.id`,
+    text: `${message}\n\n===================\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\nMsg_Id: ${msg_id}\nTo report abuse, please contact us at report@scz.my.id`,
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Hey there!</h2>

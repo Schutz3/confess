@@ -9,13 +9,13 @@ export const sendMessage = async (req, res) => {
     try {
         const data = req.body;
         if (!data) {
-            return res.status(400).json({ message: "No data provided" });
+            return res.status(400).json({ message: "KOSONGGG?????" });
         }
         
         const requiredFields = ['mode', 'to', 'message'];
         for (const field of requiredFields) {
             if (!(field in data)) {
-                return res.status(400).json({ message: `Missing required field: ${field}` });
+                return res.status(400).json({ message: `Kurang beberapa hal: ${field}` });
             }
         }
         const msg_uuid = generateUniqueId();
@@ -41,17 +41,22 @@ export const sendMessage = async (req, res) => {
 
         if (shouldSendMessage(messageDetails.mode)) {
             if (isEmail(messageDetails.to)) {
-                await sendEmail(messageDetails.to, messageDetails.message);
-                sendLogToDiscordWebhook(webhookEmbed); //hanya log id jada ke webhook, untuk jaga jaga
+                sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
+                await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
+                res.status(200).json({ message: "Pesan berhasil dikirm" });
             } else if (isPhoneNumber(messageDetails.to)) {
-                await sendWhatsAppMessage(messageDetails.to, messageDetails.message);
-                sendLogToDiscordWebhook(webhookEmbed); //hanya log id jada ke webhook, untuk jaga jaga
+                sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
+                await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
+                res.status(200).json({ message: "Pesan berhasil dikirm" });
             } else {
-                return res.status(400).json({ message: "Invalid 'to' field. Must be an email or phone number." });
+                return res.status(400).json({ message: "Nomor telpon ga valid cok" });
             }
+        } else {
+            const loadingTime = Math.floor(Math.random() * (3500 - 2000 + 1) + 1000);
+            setTimeout(() => {
+                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
+            }, loadingTime);
         }
-
-        res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
 
     } catch (error) {
         console.error(error);

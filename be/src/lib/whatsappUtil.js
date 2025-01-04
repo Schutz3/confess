@@ -34,23 +34,18 @@ export const sendWhatsAppMessage = async (to, message, msg_id) => {
     await initializeWhatsApp();
   }
   
-  let msg = `Hey there!, here is the message\n\n===================\n\n${message}\n\n===================\n\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\n\nMsg_Id:${msg_id}\n\nTo report abuse, please contact us at report@scz.my.id`;
+  let msg = `${message}\n\n===================\nSent from ${App} at ${url} - ${new Date().toLocaleString()}\nMsg_Id: ${msg_id}\nTo report abuse, please contact us at report@scz.my.id`;
 
-  let formattedNumber = to.replace(/[^\d]/g, ''); 
-  if (formattedNumber.startsWith('62')) {
-    formattedNumber = formattedNumber;
-  } else if (formattedNumber.startsWith('0')) {
+  let formattedNumber = to.replace(/^\+/, '').replace(/\D/g, '');
+  
+  if (formattedNumber.startsWith('0')) {
     formattedNumber = formattedNumber.slice(1);
-  } else {
-    formattedNumber = formattedNumber;
-  }
-  const chatId = `${formattedNumber}@c.us`;
+  };
 
-  console.log(`Attempting to send message to: ${chatId}`);
+  const chatId = `${formattedNumber}@c.us`;
 
   try {
     await client.sendMessage(chatId, msg);
-    console.log(`Message sent successfully to ${chatId}`);
   } catch (error) {
     console.error(`Failed to send message to ${chatId}:`, error);
     throw error;

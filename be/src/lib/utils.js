@@ -11,16 +11,26 @@ export const isEmail = (value) => {
   
   export const isPhoneNumber = (value) => {
     const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-
-    if (!value.startsWith('+')) {
-      value = '+' + value;
+    if (!value) {
+        return false;
+    } 
+    else if (typeof value !== 'string') {
+        return false;
     }
-    if (value.length < 15 || value.length > 18) {
-      return false;
+    else if (value.length > 18) {
+        return false;
     }
-
-    return phoneRegex.test(value);
-  };
+    else if (value.length < 10) {
+        return false;
+    }
+    else if (!/^\+?[0-9]+$/.test(value)) {
+        return false;
+    }
+    else if (!phoneRegex.test(value)) {
+        return false;
+    }
+    else return true;
+};
   
   export const shouldSendMessage = (mode) => {
     if (mode === true) return true;
@@ -32,26 +42,38 @@ export const isEmail = (value) => {
     return Math.random().toString(36).substr(2, 9);
   };
 
-  export const sendLogToDiscordWebhook = (data) => {
-    if (!WEBHOOK) {
-      console.error("No Discord webhook URL found in environment variables.");
-      return;
+  export const sendLogToDiscordWebhook = async (embed) => {
+    try {
+        if (!WEBHOOK) {
+            return;
+        }
+        const safeEmbed = {
+            title: embed.title || 'Subbited Confession',
+            color: embed.color || 0x0099ff,
+            fields: Array.isArray(embed.fields) ? embed.fields.map(field => ({
+                name: field.name || 'Field',
+                value: field.value || 'No value',
+                inline: !!field.inline
+            })) : [],
+            timestamp: new Date().toISOString()
+        };
+
+        const payload = {
+            embeds: [safeEmbed]
+        };
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'User-Agent': 'ConfessBot/1.0'
+            }
+        };
+
+        const response = await axios.post(WEBHOOK, payload, config);
+    } catch (error) {
+        console.error('Error sending log to Discord webhook:', error.message);
     }
-    const options = {
-        method: 'POST',
-        url: WEBHOOK,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: data }),
-    };
-    axios(options)
-     .then(() => {
-        console.log('Log sent to Discord');
-      })
-      .catch((error) => {
-        console.error('Error sending log to Discord:', error);
-      });
-    
-    };
+};
 
 
   

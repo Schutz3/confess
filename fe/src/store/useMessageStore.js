@@ -1,17 +1,17 @@
 import { create } from 'zustand';
 import { axiosInstance } from '../lib/axios';
+import toast from "react-hot-toast";
 
 const COOLDOWN_PERIOD = 60000;
 
-// Helper functions for validation
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
 const isValidPhoneNumber = (phone) => {
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
-  return phoneRegex.test(phone);
+  const phoneRegex = /^\+?[1-9]\d{7,14}$/;
+  return phoneRegex.test(phone.replace(/\s+/g, ''));
 };
 
 const useMessageStore = create((set, get) => ({
@@ -32,10 +32,10 @@ const useMessageStore = create((set, get) => ({
     const currentTime = Date.now();
 
     if (lastSubmissionTime && currentTime - parseInt(lastSubmissionTime) < COOLDOWN_PERIOD) {
-      set({ 
-        isLoading: false, 
-        error: `Please wait ${Math.ceil((COOLDOWN_PERIOD - (currentTime - parseInt(lastSubmissionTime))) / 1000)} seconds before submitting again.`
-      });
+      const waitTime = Math.ceil((COOLDOWN_PERIOD - (currentTime - parseInt(lastSubmissionTime))) / 1000);
+      const errorMessage = `Sabar dikit napa, sisa ${waitTime} detik lagi baru lo bisa ngirim`;
+      set({ isLoading: false, error: errorMessage });
+      toast.error(errorMessage);
       return;
     }
 
@@ -43,7 +43,9 @@ const useMessageStore = create((set, get) => ({
       const { message, to, mode } = get();
 
       if (!isValidEmail(to) && !isValidPhoneNumber(to)) {
-        set({ isLoading: false, error: 'Please enter a valid email address or phone number.' });
+        const errorMessage = 'Masukin email atau no hp yg valid';
+        set({ isLoading: false, error: errorMessage });
+        toast.error(errorMessage);
         return;
       }
 
@@ -62,18 +64,23 @@ const useMessageStore = create((set, get) => ({
 
       const response = await axiosInstance.post('/send', messageDetails);
 
+      console.log(messageDetails);
+
       sessionStorage.setItem('lastSubmissionTime', currentTime.toString());
 
       set({ isLoading: false, message: '', to: '' });
+      toast.success(response.data.message || 'Pesan lo berhasil dikirim.' );
       return response.data;
     } catch (error) {
-      let errorMessage = 'An error occurred while sending the message.';
+      let errorMessage = 'Error gan';
       if (error.response) {
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        errorMessage = 'No response received from the server. Please try again later.';
+        errorMessage = 'Error gan, backend ngamuk';
       }
       set({ isLoading: false, error: errorMessage });
+      console.log(messageDetails);
+      toast.error(errorMessage);
     }
   },
 
