@@ -5,16 +5,14 @@ Confess-In is an anonymous messaging platform that allows users to express thems
 ## Key Features
 
 - 🕵️‍♂️ Send anonymous messages
-- 📧 Email delivery support
-- 📱 WhatsApp integration
-- 🔒 Guaranteed user privacy
+- 📧 Can send trough email
+- 📱 Can send trough whatsapp
 - 🌈 User-friendly interface
 
 ## Technologies Used
 
 - Frontend: React, Vite, Tailwind CSS
 - Backend: Node.js, Express
-- Database: MongoDB
 - WhatsApp Integration: whatsapp-web.js
 
 ## Getting Started
@@ -43,4 +41,4 @@ For questions or suggestions, please contact us at [schutze@scz.my.id](mailto:sc
 
 ---
 
-Made by the Confess-In Team
+Made by me, Inspired by internet
