@@ -1,5 +1,6 @@
 import dontenv from 'dotenv';
 import axios from 'axios';
+import { isPossiblePhoneNumber } from 'react-phone-number-input'
 
 dontenv.config();
 const WEBHOOK = process.env.DC_LOG;
@@ -10,23 +11,10 @@ export const isEmail = (value) => {
   };
   
   export const isPhoneNumber = (value) => {
-    const phoneRegex = /^\+?[1-9]\d{1,14}$/;
     if (!value) {
         return false;
     } 
-    else if (typeof value !== 'string') {
-        return false;
-    }
-    else if (value.length > 18) {
-        return false;
-    }
-    else if (value.length < 10) {
-        return false;
-    }
-    else if (!/^\+?[0-9]+$/.test(value)) {
-        return false;
-    }
-    else if (!phoneRegex.test(value)) {
+    else if (!isPossiblePhoneNumber(value)) {
         return false;
     }
     else return true;
