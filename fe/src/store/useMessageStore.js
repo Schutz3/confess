@@ -64,8 +64,6 @@ const useMessageStore = create((set, get) => ({
 
       const response = await axiosInstance.post('/send', messageDetails);
 
-      console.log(messageDetails);
-
       sessionStorage.setItem('lastSubmissionTime', currentTime.toString());
 
       set({ isLoading: false, message: '', to: '' });
@@ -79,8 +77,7 @@ const useMessageStore = create((set, get) => ({
         errorMessage = 'Error gan, backend ngamuk';
       }
       set({ isLoading: false, error: errorMessage });
-      console.log(messageDetails);
-      toast.error(errorMessage);
+      toast.error(error.response.data.message);
     }
   },
 

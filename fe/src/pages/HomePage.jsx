@@ -2,6 +2,11 @@ import React from 'react'
 import useMessageStore from '../store/useMessageStore'
 import { CircleOff, X, Loader2 } from 'lucide-react'
 
+const randomPlaceholder = ["Balikan yuk?", "Sebenernya gue....", "Apa kabar?", "Hows your life?", "Kerjain projek yang bener jing", "Minimal ada usahaa", "Asal lo tau ya dek....", "I crush on u", "I miss u but i hate u", "Gue gatau apa yang terjadi sampai asing gini", "Sehat sehat ya lo"]
+function getRandomPlaceholder() {
+    return randomPlaceholder[Math.floor(Math.random() * randomPlaceholder.length)]
+}
+
 const HomePage = () => {
     const { message, to, mode, isLoading, error, setMessage, setTo, setMode, sendMessage, clearError } = useMessageStore()
 
@@ -48,17 +53,17 @@ const HomePage = () => {
                         <textarea
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Balikan yuk?"
+                            placeholder={getRandomPlaceholder()}
                             className="textarea textarea-bordered h-24"
                         />
                     </div>
                     <div className="form-control mb-6">
                         <label className="label cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between">
                             <span className="label-text mb-2 sm:mb-0">
-                                Mode: <span className="font-semibold">{mode ? 'YOLO' : 'Safe'}</span>
+                                Mode: <span className="font-semibold">{mode ? 'YOLOOO' : 'Mah, adek takut :(('}</span>
                             </span>
                             <div className="flex items-center">
-                                <span className="text-xs mr-2">{mode ? '100%' : '10%'} chance</span>
+                                <span className="text-xs mr-2">{mode ? '99.99%' : '10%'} chance</span>
                                 <input
                                     type="checkbox"
                                     className="toggle toggle-primary"
@@ -69,8 +74,8 @@ const HomePage = () => {
                         </label>
                         <p className="text-xs mt-1 text-gray-500">
                             {mode
-                                ? 'YOLO: 100% chance pesan akan terkirim'
-                                : 'Safe: 10% chance pesan akan terkirim'}
+                                ? '99.99% chance pesan akan terkirim (kalo gaada bug)'
+                                : '10% chance pesan akan terkirim'}
                         </p>
                     </div>
                     <button type="submit" className="btn btn-primary w-full" disabled={isLoading}>

@@ -10,24 +10,22 @@ const AboutPage = () => {
                     <CircleHelp className="inline-block size-16 mb-4" />
                 </div>
                 <p className="text-lg mb-4">
-                    Bro, Confess itu aplikasi buat ngirim pesan anonim. Jadi lo bisa ngomong apa aja tanpa ketahuan siapa lo. 
-                    Cocok banget buat lo yang pengen ngungkapin sesuatu tapi malu-malu kucing.
+                    Ini aplikasi gue bikin gara gara FYP gue isinya kek ginian. Mayan buat portofolio juga hehe
                 </p>
 
                 <p className="text-lg mb-4">
-                    Nah, pake Confess lo bisa:
+                    Nah, pake Confess ini lo bisa:
                 </p>
 
                 <ul className="list-disc list-inside mb-4 space-y-2">
                     <li>Ngirim pesan rahasia lewat email atau WhatsApp</li>
-                    <li>Milih mau ngirim 10% (buat yang masih ragu-ragu) atau 100% (buat yang nekat abis)</li>
-                    <li>Ngomong apa aja tanpa takut diomongin orang</li>
-                    <li>Nyamperin orang yang selama ini lo taksir diem-diem</li>
+                    <li>Milih mau ngirim 10% buat yang masih ragu-ragu atau 99.99% buat yang PD (00.01% nya kalo gaada bug)</li>
+                    <li>Ngomong apa aja tanpa takut ketauan sape lo</li>
                 </ul>
 
                 <p className="text-lg mb-4">
-                    Tapi inget ya bro, meskipun Confess bisa bikin lo anonim, jangan sampe dipake buat nge-bully atau 
-                    nyakitin orang lain. Kita mah pengennya damai-damai aja.
+                    Tapi inget cok, meskipun Confess bisa bikin lo anonim, jangan sampe dipake buat bully orang atau 
+                    nyakitin orang lain. Gue doxxing juga nih.
                 </p>
 
                 <div className="bg-warning text-warning-content p-4 rounded-lg mb-6">
@@ -39,12 +37,15 @@ const AboutPage = () => {
                     </p>
                     <a href="mailto:report@scz.my.id" className="font-bold underline">report@scz.my.id</a>
                     <p className="mt-2">
-                        Tenang aja, kita bakal nanggepin semua laporan dengan serius. (kalo ga sibuk) Biar Confess tetep aman dan nyaman buat semua orang.
+                        Tenang aja, gue bakal nanggepin semua laporan. (kalo ga sibuk).
                     </p>
                 </div>
 
                 <p className="text-sm text-center">
-                    Penasaran sama source code? Cek aja <Link to="https://github.com/Schutz3" className="underline">di sini</Link>
+                    Source code? Cek <Link to="https://github.com/Schutz3" className="underline">di sini</Link>
+                </p>
+                <p className="text-sm text-center">
+                    Yang bikin? Cek <Link to="https://scz.my.id/" className="underline">di sini</Link>
                 </p>
             </div>
         </div>

@@ -1,6 +1,8 @@
 import dontenv from 'dotenv';
 import axios from 'axios';
 import { isPossiblePhoneNumber } from 'react-phone-number-input'
+import { whitelist } from './whitelist.js';
+
 
 dontenv.config();
 const WEBHOOK = process.env.DC_LOG;
@@ -61,6 +63,15 @@ export const isEmail = (value) => {
     } catch (error) {
         console.error('Error sending log to Discord webhook:', error.message);
     }
+};
+
+export const isWhitelisted = (to) => {
+    const cleanedTo = to.replace(/\s/g, '');
+    return whitelist.includes(cleanedTo);
+};
+
+export const isNotWhitelisted = (to) => {
+    return !isWhitelisted(to);
 };
 
 

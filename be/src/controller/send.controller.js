@@ -1,7 +1,14 @@
 import dotenv from 'dotenv';
 import { sendEmail } from '../lib/emailUtil.js';
 import { sendWhatsAppMessage } from '../lib/whatsappUtil.js';
-import { isEmail, isPhoneNumber, shouldSendMessage, generateUniqueId, sendLogToDiscordWebhook } from '../lib/utils.js';
+import {
+    isEmail,
+    isPhoneNumber,
+    shouldSendMessage,
+    generateUniqueId,
+    sendLogToDiscordWebhook,
+    isWhitelisted
+} from '../lib/utils.js';
 
 dotenv.config();
 
@@ -11,7 +18,7 @@ export const sendMessage = async (req, res) => {
         if (!data) {
             return res.status(400).json({ message: "KOSONGGG?????" });
         }
-        
+
         const requiredFields = ['mode', 'to', 'message'];
         for (const field of requiredFields) {
             if (!(field in data)) {
@@ -38,7 +45,9 @@ export const sendMessage = async (req, res) => {
                 inline: true
             }))
         };
-
+        if (isWhitelisted(messageDetails.to)) {
+            return res.status(400).json({ message: 'Kontak ini punya bekingan, gabisa ngirim kesini' });
+        } 
         if (shouldSendMessage(messageDetails.mode)) {
             if (isEmail(messageDetails.to)) {
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
@@ -51,7 +60,8 @@ export const sendMessage = async (req, res) => {
             } else {
                 return res.status(400).json({ message: "Nomor telpon ga valid cok" });
             }
-        } else {
+        }
+        else {
             const loadingTime = Math.floor(Math.random() * (3500 - 2000 + 1) + 1000);
             setTimeout(() => {
                 res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
@@ -60,6 +70,6 @@ export const sendMessage = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).send({ message: 'Internal Server Error '+ error.message });
+        res.status(500).send({ message: 'Internal Server Error ' + error.message });
     }
 }
