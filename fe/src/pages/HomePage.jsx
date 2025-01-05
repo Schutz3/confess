@@ -38,7 +38,7 @@ const HomePage = () => {
                 <form onSubmit={handleSubmit} className="max-w-md mx-auto">
                     <div className="form-control mb-4">
                         <label className="label">
-                            <span className="label-text">Email / No WA penerima (Make +62 / +countryCode)</span>
+                            <span className="label-text">Recepient Email / Whatsapp Number (+62xxxxx / +countryCode)</span>
                         </label>
                         <input
                             type="text"
@@ -50,7 +50,7 @@ const HomePage = () => {
                     </div>
                     <div className="form-control mb-4">
                         <label className="label">
-                            <span className="label-text">Isi pesan</span>
+                            <span className="label-text">Message Content</span>
                         </label>
                         <textarea
                             value={message}
@@ -62,7 +62,7 @@ const HomePage = () => {
                     <div className="form-control mb-6">
                         <label className="label cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between">
                             <span className="label-text mb-2 sm:mb-0">
-                                Mode: <span className="font-semibold">{mode ? 'YOLOOO' : 'Mah, adek takut :(('}</span>
+                                Mode: <span className="font-semibold">{mode ? 'YOLOOO' : 'Mom, im scaredd :(('}</span>
                             </span>
                             <div className="flex items-center">
                                 <span className="text-xs mr-2">{mode ? '99.99%' : '10%'} chance</span>
@@ -76,18 +76,18 @@ const HomePage = () => {
                         </label>
                         <p className="text-xs mt-1 text-gray-500">
                             {mode
-                                ? '99.99% chance pesan akan terkirim (kalo gaada bug)'
-                                : '10% chance pesan akan terkirim'}
+                                ? '99.99% chance message sent (if there is no bug)'
+                                : '10% chance message sent'}
                         </p>
                     </div>
                     <button type="submit" className="btn btn-primary w-full" disabled={isLoading}>
                         {isLoading ? (
                             <>
                                 <Loader2 className="h-5 w-5 animate-spin" />
-                                Mengirim
+                                Sending
                             </>
                         ) : (
-                            "Kirim"
+                            "Send"
                         )}
                     </button>
                 </form>

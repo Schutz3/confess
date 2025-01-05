@@ -16,21 +16,21 @@ export const sendMessage = async (req, res) => {
     try {
         const data = req.body;
         if (!data) {
-            return res.status(400).json({ message: "KOSONGGG?????" });
+            return res.status(400).json({ message: "EMPTYYYY ?????" });
         }
 
         const requiredFields = ['mode', 'to', 'message'];
         for (const field of requiredFields) {
             if (!(field in data)) {
-                return res.status(400).json({ message: `Kurang beberapa hal: ${field}` });
+                return res.status(400).json({ message: `Missing some fields: ${field}` });
             }
         }
         if (!data.message || typeof data.message!=='string' || data.message.trim() === '' || data.message.length < 5) {
-            return res.status(400).json({ message: "Lo pesan lo ga jelas" });
+            return res.status(400).json({ message: "U have fkng unclear message" });
         }
 
         if (!data.details ||!Array.isArray(data.details) || data.details.length === 0) {
-            return res.status(400).json({ message: "Ada masalah dikit sama API, backend nya jelek emang" });
+            return res.status(400).json({ message: "Something wrong with our API, Stupid backend" });
         }
 
         const msg_uuid = generateUniqueId();
@@ -51,25 +51,25 @@ export const sendMessage = async (req, res) => {
             }))
         };
         if (isWhitelisted(messageDetails.to)) {
-            return res.status(400).json({ message: 'Kontak ini punya bekingan, gabisa ngirim kesini' });
+            return res.status(400).json({ message: 'Cant send to this contact bcz this contact is on our whitelist mode.' });
         } 
         if (shouldSendMessage(messageDetails.mode)) {
             if (isEmail(messageDetails.to)) {
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
-                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
+                res.status(200).json({ message: "Confession sent" });
             } else if (isPhoneNumber(messageDetails.to)) {
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
-                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
+                res.status(200).json({ message: "Confession sent" });
             } else {
-                return res.status(400).json({ message: "Nomor telpon ga valid cok" });
+                return res.status(400).json({ message: "Confession sent" });
             }
         }
         else {
             const loadingTime = Math.floor(Math.random() * (3500 - 2000 + 1) + 1000);
             setTimeout(() => {
-                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
+                res.status(200).json({ message: "Confession sent" });
             }, loadingTime);
         }
 

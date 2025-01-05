@@ -33,7 +33,7 @@ const useMessageStore = create((set, get) => ({
 
     if (lastSubmissionTime && currentTime - parseInt(lastSubmissionTime) < COOLDOWN_PERIOD) {
       const waitTime = Math.ceil((COOLDOWN_PERIOD - (currentTime - parseInt(lastSubmissionTime))) / 1000);
-      const errorMessage = `Sabar dikit napa, sisa ${waitTime} detik lagi baru lo bisa ngirim`;
+      const errorMessage = `Chill out bro, wait ${waitTime} sec before sending again.`;
       set({ isLoading: false, error: errorMessage });
       toast.error(errorMessage);
       return;
@@ -43,13 +43,13 @@ const useMessageStore = create((set, get) => ({
       const { message, to, mode } = get();
 
       if (!isValidEmail(to) && !isValidPhoneNumber(to)) {
-        const errorMessage = 'Masukin email atau no hp yg valid';
+        const errorMessage = 'Bro, invalid email or phone number';
         set({ isLoading: false, error: errorMessage, to: '' });
         toast.error(errorMessage);
         return;
       }
       if (message.trim() === ''  || message.trim().length < 5) {
-        const errorMessage = 'Pendek amat pesan lo';
+        const errorMessage = 'Ur message is too short bro';
         set({ isLoading: false, error: errorMessage });
         toast.error(errorMessage);
         return;
@@ -71,14 +71,14 @@ const useMessageStore = create((set, get) => ({
       sessionStorage.setItem('lastSubmissionTime', currentTime.toString());
 
       set({ isLoading: false, message: '', to: '' });
-      toast.success(response.data.message || 'Pesan lo berhasil dikirim.' );
+      toast.success(response.data.message || 'Confession sent.' );
       return response.data;
     } catch (error) {
-      let errorMessage = 'Error gan';
+      let errorMessage = 'There is an error occurred';
       if (error.response) {
         errorMessage = error.response.data.message || errorMessage;
       } else if (error.request) {
-        errorMessage = 'Error gan, backend ngamuk';
+        errorMessage = 'There is an error, stupid backend';
       }
       set({ isLoading: false, error: errorMessage });
       toast.error(error.response.data.message);
