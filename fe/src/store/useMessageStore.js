@@ -48,6 +48,12 @@ const useMessageStore = create((set, get) => ({
         toast.error(errorMessage);
         return;
       }
+      if (message.trim() === ''  || message.trim().length < 5) {
+        const errorMessage = 'Pendek amat pesan lo';
+        set({ isLoading: false, error: errorMessage });
+        toast.error(errorMessage);
+        return;
+      }
 
     const whoisResponse = await fetch('https://hutils.loxal.net/whois');
     const whoisData = await whoisResponse.json();

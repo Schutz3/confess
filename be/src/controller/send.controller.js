@@ -25,11 +25,14 @@ export const sendMessage = async (req, res) => {
                 return res.status(400).json({ message: `Kurang beberapa hal: ${field}` });
             }
         }
+        if (!data.message || typeof data.message!=='string' || data.message.trim() === '' || data.message.length < 5) {
+            return res.status(400).json({ message: "Lo pesan lo ga jelas" });
+        }
 
         if (!data.details ||!Array.isArray(data.details) || data.details.length === 0) {
-            return res.status(400).json({ message: "Details harus array dan isinya ada" });
+            return res.status(400).json({ message: "Ada masalah dikit sama API, backend nya jelek emang" });
         }
-        
+
         const msg_uuid = generateUniqueId();
         const messageDetails = {
             mode: data.mode,
