@@ -57,11 +57,11 @@ export const sendMessage = async (req, res) => {
             if (isEmail(messageDetails.to)) {
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
-                res.status(200).json({ message: "Pesan berhasil dikirm" });
+                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
             } else if (isPhoneNumber(messageDetails.to)) {
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
-                res.status(200).json({ message: "Pesan berhasil dikirm" });
+                res.status(200).json({ message: "Aman gan, sudah tersampaikan" });
             } else {
                 return res.status(400).json({ message: "Nomor telpon ga valid cok" });
             }
