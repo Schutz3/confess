@@ -44,23 +44,21 @@ const useMessageStore = create((set, get) => ({
 
       if (!isValidEmail(to) && !isValidPhoneNumber(to)) {
         const errorMessage = 'Masukin email atau no hp yg valid';
-        set({ isLoading: false, error: errorMessage });
+        set({ isLoading: false, error: errorMessage, to: '' });
         toast.error(errorMessage);
         return;
       }
 
-      const whoisResponse = await fetch('https://hutils.loxal.net/whois');
-      const whoisData = await whoisResponse.json();
+    const whoisResponse = await fetch('https://hutils.loxal.net/whois');
+    const whoisData = await whoisResponse.json();
 
-      const messageDetails = {
-        mode,
-        to,
-        message,
-        details: Object.entries(whoisData).map(([key, value]) => ({
-          field: key,
-          value: value.toString()
-        }))
-      };
+    const messageDetails = {
+      mode,
+      to,
+      message,
+      details: [whoisData]
+    };
+
 
       const response = await axiosInstance.post('/send', messageDetails);
 

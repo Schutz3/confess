@@ -7,6 +7,8 @@ function getRandomPlaceholder() {
     return randomPlaceholder[Math.floor(Math.random() * randomPlaceholder.length)]
 }
 
+const placeholder = getRandomPlaceholder();
+
 const HomePage = () => {
     const { message, to, mode, isLoading, error, setMessage, setTo, setMode, sendMessage, clearError } = useMessageStore()
 
@@ -53,7 +55,7 @@ const HomePage = () => {
                         <textarea
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            placeholder={getRandomPlaceholder()}
+                            placeholder={placeholder}
                             className="textarea textarea-bordered h-24"
                         />
                     </div>

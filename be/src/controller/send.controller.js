@@ -25,23 +25,25 @@ export const sendMessage = async (req, res) => {
                 return res.status(400).json({ message: `Kurang beberapa hal: ${field}` });
             }
         }
+
+        if (!data.details ||!Array.isArray(data.details) || data.details.length === 0) {
+            return res.status(400).json({ message: "Details harus array dan isinya ada" });
+        }
+        
         const msg_uuid = generateUniqueId();
         const messageDetails = {
             mode: data.mode,
             to: data.to,
             message: data.message,
-            details: data.details.map(detail => ({
-                field: detail.key,
-                value: detail.value
-            }))
+            details: data.details[0]
         };
 
         let webhookEmbed = {
             color: 0x0099ff,
             title: "Details - UUID: " + msg_uuid,
-            fields: messageDetails.details.map(detail => ({
-                name: detail.field,
-                value: detail.value,
+            fields: Object.entries(messageDetails.details).map(([key, value]) => ({
+                name: key,
+                value: value.toString(),
                 inline: true
             }))
         };
