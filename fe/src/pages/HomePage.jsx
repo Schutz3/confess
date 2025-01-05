@@ -53,17 +53,25 @@ const HomePage = () => {
                         />
                     </div>
                     <div className="form-control mb-6">
-                        <label className="label cursor-pointer">
-                            <span className="label-text tooltip tooltip-right" data-tip="Yoloo 100% chance pesan lo kekirim, Mamah aku takut 10% chance pesan lo kekirim">
-                                Mode: {mode ? 'YOLOOOOOO' : 'Mamahhh aku takuttt :(('}
+                        <label className="label cursor-pointer flex flex-col sm:flex-row items-start sm:items-center justify-between">
+                            <span className="label-text mb-2 sm:mb-0">
+                                Mode: <span className="font-semibold">{mode ? 'YOLO' : 'Safe'}</span>
                             </span>
-                            <input
-                                type="checkbox"
-                                className="toggle toggle-primary"
-                                checked={mode}
-                                onChange={() => setMode(!mode)}
-                            />
+                            <div className="flex items-center">
+                                <span className="text-xs mr-2">{mode ? '100%' : '10%'} chance</span>
+                                <input
+                                    type="checkbox"
+                                    className="toggle toggle-primary"
+                                    checked={mode}
+                                    onChange={() => setMode(!mode)}
+                                />
+                            </div>
                         </label>
+                        <p className="text-xs mt-1 text-gray-500">
+                            {mode
+                                ? 'YOLO: 100% chance pesan akan terkirim'
+                                : 'Safe: 10% chance pesan akan terkirim'}
+                        </p>
                     </div>
                     <button type="submit" className="btn btn-primary w-full" disabled={isLoading}>
                         {isLoading ? (
