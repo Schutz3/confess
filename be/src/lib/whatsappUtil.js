@@ -1,5 +1,5 @@
 import pkg from 'whatsapp-web.js';
-const { Client, LocalAuth, MessageMedia } = pkg;
+const { Client, LocalAuth } = pkg;
 import qrcode from 'qrcode-terminal';
 import dotenv from 'dotenv';
 import { whitelist } from './whitelist.js';
@@ -19,6 +19,12 @@ const adminNumber = process.env.ADMIN_NUMBER + '@c.us';
 const genAI = new GoogleGenerativeAI(process.env.GENAI_API_KEY);
 console.log(process.env.GENAI_API_KEY);
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+const randomDelay = async () => {
+  const delay = Math.floor(Math.random() * (15000 - 10000 + 1) + 10000);
+  await sleep(delay);
+};
 let client;
 let chat = null;
 
@@ -153,6 +159,7 @@ export const sendWhatsAppMessage = async (to, message, msg_id) => {
   const chatId = `${formattedNumber}@c.us`;
 
   try {
+    await randomDelay();
     await client.sendMessage(chatId, msg);
   } catch (error) {
     console.error(`Failed to send message to ${chatId}:`, error);
@@ -177,6 +184,7 @@ export const sendWhatsAppAI = async (to, message) => {
   const chatId = `${formattedNumber}@c.us`;
 
   try {
+    await randomDelay();
     await client.sendMessage(chatId, msg);
   } catch (error) {
     console.error(`Failed to send message to ${chatId}:`, error);
