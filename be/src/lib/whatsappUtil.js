@@ -197,7 +197,7 @@ const handleWhitelistCommand = async (message) => {
     case '!addwl':
       if (args.length === 1) {
         const numberToAdd = args[0];
-        if (!isPhoneNumber(numberToAdd) || !isEmail(numberToAdd)) {
+        if (!isPhoneNumber(numberToAdd) && !isEmail(numberToAdd)) {
           await client.sendMessage(sender, `${numberToAdd} bukan no hp/email yang valid`);
           return;
         }
