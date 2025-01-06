@@ -3,7 +3,7 @@ const { Client, LocalAuth, MessageMedia } = pkg;
 import qrcode from 'qrcode-terminal';
 import dotenv from 'dotenv';
 import { whitelist } from './whitelist.js';
-import { isPhoneNumber } from './utils.js';
+import { isPhoneNumber, isEmail } from './utils.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -197,8 +197,8 @@ const handleWhitelistCommand = async (message) => {
     case '!addwl':
       if (args.length === 1) {
         const numberToAdd = args[0];
-        if (!isPhoneNumber(numberToAdd)) {
-          await client.sendMessage(sender, `${numberToAdd} bukan no hp  yang valid`);
+        if (!isPhoneNumber(numberToAdd) || !isEmail(numberToAdd)) {
+          await client.sendMessage(sender, `${numberToAdd} bukan no hp/email yang valid`);
           return;
         }
         if (!whitelist.includes(numberToAdd)) {
