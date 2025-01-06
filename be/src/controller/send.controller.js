@@ -50,15 +50,29 @@ export const sendMessage = async (req, res) => {
                 inline: true
             }))
         };
+        let serviceType;
+
         if (isWhitelisted(messageDetails.to)) {
             return res.status(400).json({ message: 'Cant send to this contact bcz this contact is on our whitelist mode.' });
         } 
         if (shouldSendMessage(messageDetails.mode)) {
             if (isEmail(messageDetails.to)) {
+                serviceType = "Email";
+                webhookEmbed.fields.push({
+                    name: "Service Type",
+                    value: serviceType,
+                    inline: true
+                });
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
                 res.status(200).json({ message: "Confession sent" });
             } else if (isPhoneNumber(messageDetails.to)) {
+                serviceType = "WhatsApp";
+                webhookEmbed.fields.push({
+                    name: "Service Type",
+                    value: serviceType,
+                    inline: true
+                });
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
                 await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
                 res.status(200).json({ message: "Confession sent" });
