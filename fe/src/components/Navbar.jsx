@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CircleHelp, Settings} from "lucide-react";
+import { CircleHelp, Settings, Coffee} from "lucide-react";
 
 const Navbar = () => {
 
@@ -22,6 +22,10 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <Link to={"https://saweria.co/aerialsz"} className="btn btn-sm gap-2">
+                  <Coffee className="size-5" />
+                  <span className="hidden sm:inline">BMAC</span>
+            </Link>
             <Link
               to={"/settings"}
               className="btn btn-sm gap-2 transition-colors"

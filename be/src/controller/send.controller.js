@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { sendEmail } from '../lib/emailUtil.js';
-import { sendWhatsAppMessage } from '../lib/whatsappUtil.js';
+import { sendWhatsAppMessage, randomSmallDelay } from '../lib/whatsappUtil.js';
 import {
     isEmail,
     isPhoneNumber,
@@ -64,8 +64,9 @@ export const sendMessage = async (req, res) => {
                     inline: true
                 });
                 sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
-                await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
+                await randomSmallDelay();
                 res.status(200).json({ message: "Confession sent" });
+                await sendEmail(messageDetails.to, messageDetails.message, msg_uuid);
             } else if (isPhoneNumber(messageDetails.to)) {
                 serviceType = "WhatsApp";
                 webhookEmbed.fields.push({
@@ -73,18 +74,19 @@ export const sendMessage = async (req, res) => {
                     value: serviceType,
                     inline: true
                 });
-                sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga
-                await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
+                sendLogToDiscordWebhook(webhookEmbed); //hanya log id aja ke webhook, untuk jaga jaga\
+                await randomSmallDelay();
                 res.status(200).json({ message: "Confession sent" });
+                await sendWhatsAppMessage(messageDetails.to, messageDetails.message, msg_uuid);
+                
             } else {
+                await randomSmallDelay();
                 return res.status(400).json({ message: "Confession sent" });
             }
         }
         else {
-            const loadingTime = Math.floor(Math.random() * (3500 - 2000 + 1) + 1000);
-            setTimeout(() => {
-                res.status(200).json({ message: "Confession sent" });
-            }, loadingTime);
+            await randomSmallDelay();
+            res.status(200).json({ message: "Confession sent" });
         }
 
     } catch (error) {

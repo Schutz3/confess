@@ -21,8 +21,8 @@ console.log(process.env.GENAI_API_KEY);
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const randomDelay = async () => {
-  const delay = Math.floor(Math.random() * (15000 - 10000 + 1) + 10000);
+export const randomSmallDelay = async () => {
+  const delay = Math.floor(Math.random() * (6000 - 3000 + 1) + 10000);
   await sleep(delay);
 };
 let client;
@@ -159,7 +159,7 @@ export const sendWhatsAppMessage = async (to, message, msg_id) => {
   const chatId = `${formattedNumber}@c.us`;
 
   try {
-    await randomDelay();
+    await randomSmallDelay();
     await client.sendMessage(chatId, msg);
   } catch (error) {
     console.error(`Failed to send message to ${chatId}:`, error);
@@ -184,9 +184,10 @@ export const sendWhatsAppAI = async (to, message) => {
   const chatId = `${formattedNumber}@c.us`;
 
   try {
-    await randomDelay();
+    await randomSmallDelay();
     await client.sendMessage(chatId, msg);
   } catch (error) {
+    await randomSmallDelay();
     console.error(`Failed to send message to ${chatId}:`, error);
     throw error;
   }
@@ -197,6 +198,7 @@ const handleWhitelistCommand = async (message) => {
   const sender = message.from;
 
   if (sender !== adminNumber) {
+    await randomSmallDelay();
     await client.sendMessage(sender, 'Lo ga diizinin make command ini');
     return;
   }
@@ -206,17 +208,21 @@ const handleWhitelistCommand = async (message) => {
       if (args.length === 1) {
         const numberToAdd = args[0];
         if (!isPhoneNumber(numberToAdd) && !isEmail(numberToAdd)) {
+          await randomSmallDelay();
           await client.sendMessage(sender, `${numberToAdd} bukan no hp/email yang valid`);
           return;
         }
         if (!whitelist.includes(numberToAdd)) {
           whitelist.push(numberToAdd);
           await saveWhitelist(whitelist);
+          await randomSmallDelay();
           await client.sendMessage(sender, `Nambahin ${numberToAdd} ke daftar bekingan`);
         } else {
+          await randomSmallDelay();
           await client.sendMessage(sender, `${numberToAdd} sudah ada di daftar bekingan`);
         }
       } else {
+        await randomSmallDelay();
         await client.sendMessage(sender, 'Tutor: !addwl +62xxx');
       }
       break;
@@ -228,21 +234,26 @@ const handleWhitelistCommand = async (message) => {
         if (index > -1) {
           whitelist.splice(index, 1);
           await saveWhitelist(whitelist);
+          await randomSmallDelay();
           await client.sendMessage(sender, `menghapus ${numberToRemove} dari bekingan`);
         } else {
+          await randomSmallDelay();
           await client.sendMessage(sender, `${numberToRemove} tidak di temukan`);
         }
       } else {
+        await randomSmallDelay();
         await client.sendMessage(sender, 'Tutor: !rmwl +62xxx');
       }
       break;
 
     case '!listwl':
       const list = whitelist.join('\n');
+      await randomSmallDelay();
       await client.sendMessage(sender, `Bekingan saat ini:\n${list}`);
       break;
 
     default:
+      await randomSmallDelay();
       await client.sendMessage(sender, 'Perinath tidak ditemukan, perintah yang ada: !addwl, !rmwl, !listwl');
   }
 };
