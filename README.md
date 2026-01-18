@@ -1,10 +1,6 @@
 # Confess-In
 Confess-In is an platform that allows users to express themselves freely without revealing their identity. Send secret messages trough email or WhatsApp easily and securely!
 
-<div align="center">
-	<a href="https://confess.scz.my.id/" target="_blank"><img src="https://raw.githubusercontent.com/Schutz3/assestProject/refs/heads/main/img/confessin.png" alt="Sample"></a>
-</div>
-
 ## Key Features
 
 - 🕵️‍♂️ Send anonymous messages
